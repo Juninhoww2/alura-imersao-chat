@@ -64,7 +64,7 @@ export default function PaginaInicial() {
           {/* Formulário */}
           <Box
             as="form"
-            onSubmit={function (infosDoEvento) {
+            onSubmit={(infosDoEvento) => {
               infosDoEvento.preventDefault();
               console.log('Alguem submeteu o form')
               roteamento.push('/chat')
@@ -81,7 +81,7 @@ export default function PaginaInicial() {
 
             <TextField
               value={username}
-              onChange={function (event) {
+              onChange={() => {
                 console.log('usuario digitou', event.target.value)
                 const valor = event.target.value;
 
