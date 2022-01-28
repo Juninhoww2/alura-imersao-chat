@@ -1,8 +1,7 @@
 import appConfig from '../config.json';
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
-import React from 'react';
 import { useRouter } from 'next/router';
-
+import React, { useState } from 'react';
 
 function Title(props) {
     console.log(props.children);
@@ -26,6 +25,21 @@ export default function PaginaInicial() {
     const [username, setUsername] = React.useState('');
     const roteamento = useRouter();
     const errorImage = '/img/errorImage.png';
+    const [loading, setLoading] = useState(false)
+    
+    const handleGitHubLogin = async () => {
+        try {
+        setLoading(true);
+        const { error } = await supabase.auth.signIn({
+            provider: 'github',
+        });
+        if (error) throw error;
+        } catch (error) {
+        alert(error.error_description || error.message);
+        } finally {
+        setLoading(false);
+        }
+    };
 
     return (
         <>
@@ -111,6 +125,17 @@ export default function PaginaInicial() {
                                 border: '1px solid #2d2d',
                             }}
                         />
+                        <Button
+                            fullWidth
+                            
+                            styleSheet={{ display: 'flex',
+                            flexDirection: 'column',
+                            border: '1px solid #2d2d',
+                            margin: '5px'
+                            }}
+                            onClick={() => handleGitHubLogin()}
+                        >
+                        </Button>
                     </Box>
                     {/* end formulário */}
 
