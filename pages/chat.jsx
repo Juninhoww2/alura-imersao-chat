@@ -3,8 +3,8 @@ import React from 'react';
 import appConfig from '../config.json';
 import { createClient } from '@supabase/supabase-js';
 
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzI5MTM0NSwiZXhwIjoxOTU4ODY3MzQ1fQ.ElxsN6BLgXkd7UXJ-3fKbLdjqn5WIqs4f6Sd7LNmV_U';
-const SUPABASE_URL = 'https://idwhoxevueqvpausrjmx.supabase.co';
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_KEY
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 
