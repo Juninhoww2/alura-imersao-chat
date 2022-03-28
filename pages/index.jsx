@@ -1,192 +1,172 @@
-import appConfig from '../config.json';
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
+import React from 'react';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import appConfig from '../config.json';
 
-function Title(props) {
-    console.log(props.children);
-    const Tag = props.tag || 'h1';
-    return (
-        <>
-            <Tag>{props.children}</Tag>
-            <style jsx>{`
-                ${Tag} {
-                    color: ${appConfig.theme.colors.person.white};
-                    font-size: 30px;
-                    font-weight: 600;
-                }
+function Titulo(props) {
+  const Tag = props.tag || 'h1';
+  return (
+    <>
+      <Tag>{props.children}</Tag>
+      <style jsx>{`
+            ${Tag} {
+                color: ${appConfig.theme.colors.neutrals['300']};
+                font-size: 24px;
+                font-weight: 600;
+            }
             `}</style>
-        </>
-    );
+    </>
+  );
 }
 
+// Componente React
+// function HomePage() {
+//     // JSX
+//     return (
+//         <div>
+//             <GlobalStyle />
+//             <Titulo tag="h2">Boas vindas de volta!</Titulo>
+//             <h2>Discord - Alura Matrix</h2>
+//         </div>
+//     )
+// }
+// export default HomePage
+
 export default function PaginaInicial() {
-    // const username = 'Usuario';
-    const [username, setUsername] = React.useState('');
-    const roteamento = useRouter();
-    const errorImage = '/img/errorImage.png';
-    const [loading, setLoading] = useState(false)
-    
-    const handleGitHubLogin = async () => {
-        try {
-        setLoading(true);
-        const { error } = await supabase.auth.signIn({
-            provider: 'github',
-        });
-        if (error) throw error;
-        } catch (error) {
-        alert(error.error_description || error.message);
-        } finally {
-        setLoading(false);
-        }
-    };
+  // const username = 'omariosouto';
+  const [username, setUsername] = React.useState('omariosouto');
+  const roteamento = useRouter();
 
-    return (
-        <>
-            {/* box */}
-            <Box
-                styleSheet={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    backgroundImage: 'url(/img/banner.jpg)',
-                    backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply', backgroundAttachment: 'fixed',
-                }}
-            >
-                {/* box-center */}
-                <Box
-                    styleSheet={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        flexDirection: {
-                            xs: 'column',
-                            sm: 'row',
-                        },
-                        width: '100%', maxWidth: '700px',
-                        borderRadius: '5px', padding: '52px', margin: '16px',
-                        backgroundColor: appConfig.theme.colors.person.transparent_black,
-                    }}
-                >
+  return (
+    <>
+      <Box
+        styleSheet={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          backgroundColor: appConfig.theme.colors.primary[500],
+          backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2021/02/drakeposting-negative-meme-1536x864.jpg)',
+          backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
+        }}
+      >
+        <Box
+          styleSheet={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexDirection: {
+              xs: 'column',
+              sm: 'row',
+            },
+            width: '100%', maxWidth: '700px',
+            borderRadius: '5px', padding: '32px', margin: '16px',
+            boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
+            backgroundColor: appConfig.theme.colors.neutrals[700],
+          }}
+        >
+          {/* Formulário */}
+          <Box
+            as="form"
+            onSubmit={function (infosDoEvento) {
+              infosDoEvento.preventDefault();
+              console.log('Alguém submeteu o form');
+              // roteamento.push('/chat?username=' + username);
+              roteamento.push(`/chat?username=${username}`);
+              // window.location.href = '/chat';
+            }}
+            styleSheet={{
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
+            }}
+          >
+            <Titulo tag="h2">Boas vindas de volta!</Titulo>
+            <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
+              {appConfig.name}
+            </Text>
 
-                    {/* formulário */}
-                    <Box
-                        as="form"
-                        onSubmit={function (infosDoEvento) {
-                            infosDoEvento.preventDefault();
-                            appConfig.username = username;
-                            roteamento.push('/chat');
-                        }}
-                        styleSheet={{
-                            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                            width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
-                        }}
-                    >
-                        <img src={`/img/icon1.png`} ></img>
-                        <Title tag="h1">Bem vindo!</Title>
-                        <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
-                            {appConfig.name}
-                        </Text>
-
-                        <TextField
-                            fullWidth
+            {/* <input
+                            type="text"
                             value={username}
-                            textFiealdColors={{
-                                neutral: {
-                                    textColor: appConfig.theme.colors.neutrals[200],
-                                    mainColor: appConfig.theme.colors.neutrals[900],
-                                    mainColorHighlight: appConfig.theme.colors.primary[500],
-                                    backgroundColor: appConfig.theme.colors.neutrals[800],
-                                },
-                            }}
-                            styleSheet={{
-                                marginBottom: '10px',
-                                border: 'black',
-                                focus: {
-                                    boxShadow: '0 0 0 0',
-                                    outline: '0',
-                                },
-                            }}
-                            onChange={function (e) {
-                                const valor = e.target.value;
+                            onChange={function (event) {
+                                console.log('usuario digitou', event.target.value);
+                                // Onde ta o valor?
+                                const valor = event.target.value;
+                                // Trocar o valor da variavel
+                                // através do React e avise quem precisa
                                 setUsername(valor);
+                            }}
+                        /> */}
+            <TextField
+              value={username}
+              onChange={function (event) {
+                console.log('usuario digitou', event.target.value);
+                // Onde ta o valor?
+                const valor = event.target.value;
+                // Trocar o valor da variavel
+                // através do React e avise quem precisa
+                setUsername(valor);
+              }}
+              fullWidth
+              textFieldColors={{
+                neutral: {
+                  textColor: appConfig.theme.colors.neutrals[200],
+                  mainColor: appConfig.theme.colors.neutrals[900],
+                  mainColorHighlight: appConfig.theme.colors.primary[500],
+                  backgroundColor: appConfig.theme.colors.neutrals[800],
+                },
+              }}
+            />
+            <Button
+              type='submit'
+              label='Entrar'
+              fullWidth
+              buttonColors={{
+                contrastColor: appConfig.theme.colors.neutrals["000"],
+                mainColor: appConfig.theme.colors.primary[900],
+                mainColorLight: appConfig.theme.colors.primary[400],
+                mainColorStrong: appConfig.theme.colors.primary[600],
+              }}
+            />
+          </Box>
+          {/* Formulário */}
 
-                            }}
-                        />
-                        <Button
-                            type='submit'
-                            label='Entrar'
-                            fullWidth
-                            buttonColors={{
-                                contrastColor: appConfig.theme.colors.person.black,
-                                mainColor: appConfig.theme.colors.person.button,
-                                mainColorLight: appConfig.theme.colors.person.button,
-                                mainColorStrong: appConfig.theme.colors.person.button,
-                            }}
-                            styleSheet={{
-                                border: '1px solid #2d2d',
-                            }}
-                        />
-                        <Button
-                            fullWidth
-                            
-                            styleSheet={{ display: 'flex',
-                            flexDirection: 'column',
-                            border: '1px solid #2d2d',
-                            margin: '5px'
-                            }}
-                            onClick={() => handleGitHubLogin()}
-                        >
-                        </Button>
-                    </Box>
-                    {/* end formulário */}
 
-                    {/*  Photo Area */}
-                    <Box
-                        styleSheet={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            maxWidth: '250px',
-                            padding: '16px',
-                            backgroundColor: 'trasnparent',
-                            flex: 1,
-                            minHeight: '240px',
-                        }}
-                    >
-                        <Image
-                            styleSheet={{
-                                borderRadius: '50%',
-                                marginBottom: '16px',
-                                boxShadow: '0 0 5px 0 #fff',
-                            }}
-                            src={username.length > 2 ? `https://github.com/${username}.png` : errorImage}
-                        />
-
-                        <a
-                            href={`https://github.com/${username}`}
-                            target={'_blank'}
-                        >
-                            <Text
-                                variant="body4"
-                                styleSheet={{
-                                    color: appConfig.theme.colors.person.white,
-                                    padding: '5px 15px',
-                                    borderRadius: '1000px',
-                                    fontSize: '16px',
-                                    hover: {
-                                        backgroundColor: appConfig.theme.colors.person.grey1,
-                                    }
-                                }}
-                            >
-                                {username}
-                            </Text>
-                        </a>
-
-                    </Box>
-                    {/*  end Photo Area */}
-                </Box>
-                {/* end box-center */}
-            </Box>
-            {/* end box */}
-        </>
-    );
+          {/* Photo Area */}
+          <Box
+            styleSheet={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              maxWidth: '200px',
+              padding: '16px',
+              backgroundColor: appConfig.theme.colors.neutrals[800],
+              border: '1px solid',
+              borderColor: appConfig.theme.colors.neutrals[999],
+              borderRadius: '10px',
+              flex: 1,
+              minHeight: '240px',
+            }}
+          >
+            <Image
+              styleSheet={{
+                borderRadius: '50%',
+                marginBottom: '16px',
+              }}
+              src={`https://github.com/${username}.png`}
+            />
+            <Text
+              variant="body4"
+              styleSheet={{
+                color: appConfig.theme.colors.neutrals[200],
+                backgroundColor: appConfig.theme.colors.neutrals[900],
+                padding: '3px 10px',
+                borderRadius: '1000px'
+              }}
+            >
+              {username}
+            </Text>
+          </Box>
+          {/* Photo Area */}
+        </Box>
+      </Box>
+    </>
+  );
 }
